@@ -1,0 +1,130 @@
+{
+  "model_name": "logistic_regression",
+  "global_importance": [
+    {
+      "feature": "Bwd Packet Length Max",
+      "importance": 0.03014,
+      "rank": 1
+    },
+    {
+      "feature": "Bwd Packet Length Mean",
+      "importance": 0.02925,
+      "rank": 2
+    },
+    {
+      "feature": "Avg Bwd Segment Size",
+      "importance": 0.02829,
+      "rank": 3
+    },
+    {
+      "feature": "Bwd Packet Length Std",
+      "importance": 0.02786,
+      "rank": 4
+    },
+    {
+      "feature": "Avg Fwd Segment Size",
+      "importance": 0.02519,
+      "rank": 5
+    },
+    {
+      "feature": "Fwd Packet Length Max",
+      "importance": 0.02445,
+      "rank": 6
+    },
+    {
+      "feature": "Fwd Packet Length Mean",
+      "importance": 0.02405,
+      "rank": 7
+    },
+    {
+      "feature": "Fwd Packet Length Std",
+      "importance": 0.02353,
+      "rank": 8
+    },
+    {
+      "feature": "Average Packet Size",
+      "importance": 0.02331,
+      "rank": 9
+    },
+    {
+      "feature": "Flow Bytes/s",
+      "importance": 0.02328,
+      "rank": 10
+    },
+    {
+      "feature": "Packet Length Mean",
+      "importance": 0.02311,
+      "rank": 11
+    },
+    {
+      "feature": "Packet Length Std",
+      "importance": 0.02294,
+      "rank": 12
+    },
+    {
+      "feature": "Down/Up Ratio",
+      "importance": 0.02251,
+      "rank": 13
+    },
+    {
+      "feature": "Subflow Fwd Bytes",
+      "importance": 0.01675,
+      "rank": 14
+    },
+    {
+      "feature": "Total Length of Fwd Packets",
+      "importance": 0.01521,
+      "rank": 15
+    },
+    {
+      "feature": "SYN Flag Count",
+      "importance": 0.01466,
+      "rank": 16
+    },
+    {
+      "feature": "RST Flag Count",
+      "importance": 0.01301,
+      "rank": 17
+    },
+    {
+      "feature": "Init_Win_bytes_backward",
+      "importance": 0.01291,
+      "rank": 18
+    },
+    {
+      "feature": "Init_Win_bytes_forward",
+      "importance": 0.01285,
+      "rank": 19
+    },
+    {
+      "feature": "Fwd Header Length",
+      "importance": 0.01276,
+      "rank": 20
+    },
+    {
+      "feature": "Total Fwd Packets",
+      "importance": 0.01274,
+      "rank": 21
+    },
+    {
+      "feature": "act_data_pkt_fwd",
+      "importance": 0.01259,
+      "rank": 22
+    },
+    {
+      "feature": "Destination Port",
+      "importance": 0.01253,
+      "rank": 23
+    },
+    {
+      "feature": "Bwd Header Length",
+      "importance": 0.01245,
+      "rank": 24
+    },
+    {
+      "feature": "Total Backward Packets",
+      "importance": 0.01224,
+      "rank": 25
+    }
+  ]
+}

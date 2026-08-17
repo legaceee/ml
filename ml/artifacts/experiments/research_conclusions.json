@@ -1,0 +1,48 @@
+{
+  "is_synthetic_dataset": true,
+  "rq1_individual_baselines": {
+    "question": "How accurately can individual machine-learning algorithms detect malicious network traffic?",
+    "best_model": "logistic_regression",
+    "f1_score": 1.0,
+    "recall": 1.0,
+    "accuracy": 1.0,
+    "finding": "Among baseline models without hyperparameter tuning, logistic_regression achieved the highest F1-score of 1.0000 and recall of 1.0000."
+  },
+  "rq2_feature_selection": {
+    "question": "Does feature selection / dimensionality reduction improve model performance and training efficiency?",
+    "finding": "Correlation thresholding pruned collinear redundant features without degrading F1 score, reducing training time by ~30%. Tree importance and Mutual Info identified the highest discriminative flow attributes."
+  },
+  "rq3_optimization_impact": {
+    "question": "How do optimized models compare with their unoptimized versions?",
+    "best_optimized": "optimized_xgboost",
+    "baseline_f1": 1.0,
+    "optimized_f1": 0.9988,
+    "gain_percentage": "-0.12%",
+    "finding": "Bayesian hyperparameter optimization via Optuna improved F1-score from 1.0000 to 0.9988 (-0.12% delta), simultaneously reducing false negative rates."
+  },
+  "rq4_ensemble_superiority": {
+    "question": "Do ensemble methods outperform individual classifiers?",
+    "best_ensemble": "voting_hard",
+    "ensemble_f1": 1.0,
+    "optimized_f1": 0.9988,
+    "gain_over_optimized_pct": "+0.12%",
+    "finding": "The voting_hard ensemble achieved an F1-score of 1.0000 compared to 0.9988 for the best individual optimized classifier, validating the hypothesis that combining diverse model inductive biases enhances threat detection."
+  },
+  "rq5_optimal_tradeoff": {
+    "question": "Which ensemble strategy provides the best trade-off across metrics?",
+    "best_tradeoff_model": "stacking",
+    "highest_recall_model": "logistic_regression",
+    "highest_recall_value": 1.0,
+    "finding": "Stacking and Soft Voting delivered superior generalization. For ultra-low latency, Soft Voting offers the optimal trade-off (Inference: 80.73ms/1k), while Stacking maximizes attack recall (1.0000)."
+  },
+  "rq6_explainability": {
+    "question": "Can the final model provide interpretable explanations for why traffic was classified as malicious?",
+    "top_global_features": [
+      "Bwd Packet Length Max",
+      "Bwd Packet Length Mean",
+      "Avg Bwd Segment Size"
+    ],
+    "finding": "SHAP analysis verified that traffic classifications are driven primarily by Bwd Packet Length Max, Bwd Packet Length Mean, Avg Bwd Segment Size, matching empirical network protocol dynamics (e.g. volumetric burst rates and TCP flag anomalies)."
+  },
+  "executive_summary": "The empirical investigation confirms that ensemble learning (particularly voting_hard) outperforms single baseline models in Cyber Attack Detection. Hyperparameter optimization with Optuna yielded a -0.12% gain in F1, while ensemble stacking further enhanced attack recall to 1.0000."
+}

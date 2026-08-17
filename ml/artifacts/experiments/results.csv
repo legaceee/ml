@@ -1,0 +1,17 @@
+experiment_id,model,feature_method,optimization,ensemble,accuracy,precision,recall,f1,roc_auc,pr_auc,fpr,fnr,training_time_sec,inference_time_ms
+BASE_LOGISTIC_REGRESSION,logistic_regression,All (61),None (Default),None,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0138,0.269
+BASE_DECISION_TREE,decision_tree,All (61),None (Default),None,0.9989,0.9975,1.0,0.9988,0.999,0.9988,0.002,0.0,0.0724,0.4196
+BASE_RANDOM_FOREST,random_forest,All (61),None (Default),None,0.9967,0.9975,0.9951,0.9963,1.0,1.0,0.002,0.0049,0.1686,30.4182
+BASE_EXTRA_TREES,extra_trees,All (61),None (Default),None,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.1165,30.1532
+BASE_SUPPORT_VECTOR_MACHINE,support_vector_machine,All (61),None (Default),None,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.2521,13.1066
+BASE_K_NEAREST_NEIGHBORS,k_nearest_neighbors,All (61),None (Default),None,0.9978,0.9951,1.0,0.9975,1.0,1.0,0.004,0.0,0.002,2969.4762
+BASE_XGBOOST,xgboost,All (61),None (Default),None,0.9989,1.0,0.9975,0.9988,1.0,1.0,0.0,0.0025,0.1791,2.262
+OPT_RF,optimized_random_forest,All (61),Optuna (5-fold CV F1),None,0.9967,0.9975,0.9951,0.9963,1.0,1.0,0.002,0.0049,27.587,54.4424
+OPT_XGB,optimized_xgboost,All (61),Optuna (5-fold CV F1),None,0.9989,1.0,0.9975,0.9988,1.0,1.0,0.0,0.0025,10.724,2.8509
+ENS_VOTING_HARD,voting_hard,All (61),Tuned Base Learners,Voting,1.0,1.0,1.0,1.0,0.5,0.5,0.0,0.0,0.6758,87.0176
+ENS_VOTING_SOFT,voting_soft,All (61),Tuned Base Learners,Voting,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.6525,80.7349
+ENS_BAGGING_EXTRA_TREES,bagging_extra_trees,All (61),Tuned Base Learners,Bagging,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.1673,31.3593
+ENS_ADABOOST,adaboost,All (61),Tuned Base Learners,Boosting,0.9933,0.9975,0.9877,0.9926,0.9999,0.9999,0.002,0.0123,1.3577,12.0127
+ENS_GRADIENT_BOOSTING,gradient_boosting,All (61),Tuned Base Learners,Boosting,0.9978,0.9951,1.0,0.9975,1.0,1.0,0.004,0.0,4.7585,2.5403
+ENS_STACKING,stacking,All (61),Tuned Base Learners,Stacking,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,2.9729,81.9318
+ENS_WEIGHTED_ENSEMBLE,weighted_ensemble,All (61),Tuned Base Learners,Boosting,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.9992,79.3241
