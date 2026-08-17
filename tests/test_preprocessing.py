@@ -1,6 +1,10 @@
-"""
-Unit tests for Data Preprocessing and Leakage Prevention.
-"""
+import sys
+from pathlib import Path
+
+# Ensure project root is present in sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 import numpy as np
 import pandas as pd
@@ -9,6 +13,7 @@ import pytest
 from ml.preprocessing.cleaning import DataCleaner
 from ml.preprocessing.encoding import LabelEncoderIDS
 from ml.preprocessing.scaling import NetworkFlowPreprocessor
+
 
 
 def test_data_cleaner_inf_and_constants():

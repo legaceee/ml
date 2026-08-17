@@ -13,7 +13,14 @@ Verifies:
 9. Backend /api/predict/test-samples endpoint functionality.
 """
 
+import sys
 from pathlib import Path
+
+# Ensure project root is present in sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import joblib
 import numpy as np
 import pandas as pd
@@ -24,6 +31,7 @@ from backend.app.main import app
 from backend.app.services.ml_service import ml_service
 
 client = TestClient(app)
+
 
 
 @pytest.fixture(scope="module")
@@ -204,3 +212,8 @@ def test_input_validation_rejection():
     raw_json = '{"model_name": "optimized_xgboost", "features": {"Destination Port": "invalid_val"}}'
     response_raw = client.post("/api/predict", content=raw_json, headers={"Content-Type": "application/json"})
     assert response_raw.status_code == 422
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])
+

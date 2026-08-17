@@ -1,6 +1,10 @@
-"""
-Unit tests for Baseline and Ensemble Machine Learning Models.
-"""
+import sys
+from pathlib import Path
+
+# Ensure project root is present in sys.path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 import numpy as np
 import pytest
@@ -9,6 +13,7 @@ from sklearn.datasets import make_classification
 from ml.models.baselines import get_baseline_models
 from ml.models.ensembles import build_ensemble_models
 from ml.training.evaluate import evaluate_model
+
 
 
 @pytest.fixture
