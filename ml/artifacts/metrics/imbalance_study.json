@@ -1,0 +1,333 @@
+{
+  "description": "Imbalanced-dataset handling study. Resampling applied to the training split only; all rows evaluated on the same untouched test split.",
+  "train_class_counts_before": {
+    "0": 27624,
+    "1": 10082
+  },
+  "train_attack_ratio_before": 0.2673845011404021,
+  "strategies": [
+    "none",
+    "class_weight",
+    "random_undersample",
+    "smote"
+  ],
+  "records": [
+    {
+      "strategy": "none",
+      "model": "logistic_regression",
+      "train_rows_after_resampling": 37706,
+      "train_class_counts_after": {
+        "0": 27624,
+        "1": 10082
+      },
+      "resample_time_sec": 0.0,
+      "training_time_sec": 1.723,
+      "accuracy": 0.9067,
+      "precision": 0.8336,
+      "recall": 0.8135,
+      "f1": 0.8234,
+      "roc_auc": 0.9585,
+      "pr_auc": 0.8981,
+      "false_positive_rate": 0.0593,
+      "false_negative_rate": 0.1865,
+      "confusion_matrix": {
+        "tp": 1758,
+        "tn": 5569,
+        "fp": 351,
+        "fn": 403
+      }
+    },
+    {
+      "strategy": "none",
+      "model": "decision_tree",
+      "train_rows_after_resampling": 37706,
+      "train_class_counts_after": {
+        "0": 27624,
+        "1": 10082
+      },
+      "resample_time_sec": 0.0,
+      "training_time_sec": 1.118,
+      "accuracy": 0.9959,
+      "precision": 0.9917,
+      "recall": 0.9931,
+      "f1": 0.9924,
+      "roc_auc": 0.9955,
+      "pr_auc": 0.9936,
+      "false_positive_rate": 0.003,
+      "false_negative_rate": 0.0069,
+      "confusion_matrix": {
+        "tp": 2146,
+        "tn": 5902,
+        "fp": 18,
+        "fn": 15
+      }
+    },
+    {
+      "strategy": "none",
+      "model": "random_forest",
+      "train_rows_after_resampling": 37706,
+      "train_class_counts_after": {
+        "0": 27624,
+        "1": 10082
+      },
+      "resample_time_sec": 0.0,
+      "training_time_sec": 3.826,
+      "accuracy": 0.9973,
+      "precision": 0.9958,
+      "recall": 0.994,
+      "f1": 0.9949,
+      "roc_auc": 0.9998,
+      "pr_auc": 0.9992,
+      "false_positive_rate": 0.0015,
+      "false_negative_rate": 0.006,
+      "confusion_matrix": {
+        "tp": 2148,
+        "tn": 5911,
+        "fp": 9,
+        "fn": 13
+      }
+    },
+    {
+      "strategy": "class_weight",
+      "model": "logistic_regression",
+      "train_rows_after_resampling": 37706,
+      "train_class_counts_after": {
+        "0": 27624,
+        "1": 10082
+      },
+      "resample_time_sec": 0.0,
+      "training_time_sec": 2.147,
+      "accuracy": 0.9063,
+      "precision": 0.7688,
+      "recall": 0.9292,
+      "f1": 0.8414,
+      "roc_auc": 0.9575,
+      "pr_auc": 0.8895,
+      "false_positive_rate": 0.102,
+      "false_negative_rate": 0.0708,
+      "confusion_matrix": {
+        "tp": 2008,
+        "tn": 5316,
+        "fp": 604,
+        "fn": 153
+      }
+    },
+    {
+      "strategy": "class_weight",
+      "model": "decision_tree",
+      "train_rows_after_resampling": 37706,
+      "train_class_counts_after": {
+        "0": 27624,
+        "1": 10082
+      },
+      "resample_time_sec": 0.0,
+      "training_time_sec": 1.435,
+      "accuracy": 0.9957,
+      "precision": 0.9917,
+      "recall": 0.9921,
+      "f1": 0.9919,
+      "roc_auc": 0.9945,
+      "pr_auc": 0.9929,
+      "false_positive_rate": 0.003,
+      "false_negative_rate": 0.0079,
+      "confusion_matrix": {
+        "tp": 2144,
+        "tn": 5902,
+        "fp": 18,
+        "fn": 17
+      }
+    },
+    {
+      "strategy": "class_weight",
+      "model": "random_forest",
+      "train_rows_after_resampling": 37706,
+      "train_class_counts_after": {
+        "0": 27624,
+        "1": 10082
+      },
+      "resample_time_sec": 0.0,
+      "training_time_sec": 3.313,
+      "accuracy": 0.9973,
+      "precision": 0.9963,
+      "recall": 0.9935,
+      "f1": 0.9949,
+      "roc_auc": 0.9997,
+      "pr_auc": 0.9992,
+      "false_positive_rate": 0.0014,
+      "false_negative_rate": 0.0065,
+      "confusion_matrix": {
+        "tp": 2147,
+        "tn": 5912,
+        "fp": 8,
+        "fn": 14
+      }
+    },
+    {
+      "strategy": "random_undersample",
+      "model": "logistic_regression",
+      "train_rows_after_resampling": 20164,
+      "train_class_counts_after": {
+        "0": 10082,
+        "1": 10082
+      },
+      "resample_time_sec": 0.057,
+      "training_time_sec": 1.0,
+      "accuracy": 0.905,
+      "precision": 0.7651,
+      "recall": 0.9301,
+      "f1": 0.8396,
+      "roc_auc": 0.9587,
+      "pr_auc": 0.8897,
+      "false_positive_rate": 0.1042,
+      "false_negative_rate": 0.0699,
+      "confusion_matrix": {
+        "tp": 2010,
+        "tn": 5303,
+        "fp": 617,
+        "fn": 151
+      }
+    },
+    {
+      "strategy": "random_undersample",
+      "model": "decision_tree",
+      "train_rows_after_resampling": 20164,
+      "train_class_counts_after": {
+        "0": 10082,
+        "1": 10082
+      },
+      "resample_time_sec": 0.057,
+      "training_time_sec": 1.149,
+      "accuracy": 0.9937,
+      "precision": 0.9822,
+      "recall": 0.9944,
+      "f1": 0.9883,
+      "roc_auc": 0.9939,
+      "pr_auc": 0.9891,
+      "false_positive_rate": 0.0066,
+      "false_negative_rate": 0.0056,
+      "confusion_matrix": {
+        "tp": 2149,
+        "tn": 5881,
+        "fp": 39,
+        "fn": 12
+      }
+    },
+    {
+      "strategy": "random_undersample",
+      "model": "random_forest",
+      "train_rows_after_resampling": 20164,
+      "train_class_counts_after": {
+        "0": 10082,
+        "1": 10082
+      },
+      "resample_time_sec": 0.057,
+      "training_time_sec": 2.066,
+      "accuracy": 0.9964,
+      "precision": 0.9912,
+      "recall": 0.9954,
+      "f1": 0.9933,
+      "roc_auc": 0.9997,
+      "pr_auc": 0.9992,
+      "false_positive_rate": 0.0032,
+      "false_negative_rate": 0.0046,
+      "confusion_matrix": {
+        "tp": 2151,
+        "tn": 5901,
+        "fp": 19,
+        "fn": 10
+      }
+    },
+    {
+      "strategy": "smote",
+      "model": "logistic_regression",
+      "train_rows_after_resampling": 55248,
+      "train_class_counts_after": {
+        "0": 27624,
+        "1": 27624
+      },
+      "resample_time_sec": 0.855,
+      "training_time_sec": 2.54,
+      "accuracy": 0.9056,
+      "precision": 0.7695,
+      "recall": 0.9236,
+      "f1": 0.8395,
+      "roc_auc": 0.9581,
+      "pr_auc": 0.8915,
+      "false_positive_rate": 0.101,
+      "false_negative_rate": 0.0764,
+      "confusion_matrix": {
+        "tp": 1996,
+        "tn": 5322,
+        "fp": 598,
+        "fn": 165
+      }
+    },
+    {
+      "strategy": "smote",
+      "model": "decision_tree",
+      "train_rows_after_resampling": 55248,
+      "train_class_counts_after": {
+        "0": 27624,
+        "1": 27624
+      },
+      "resample_time_sec": 0.855,
+      "training_time_sec": 1.969,
+      "accuracy": 0.9955,
+      "precision": 0.9885,
+      "recall": 0.9949,
+      "f1": 0.9917,
+      "roc_auc": 0.9953,
+      "pr_auc": 0.9924,
+      "false_positive_rate": 0.0042,
+      "false_negative_rate": 0.0051,
+      "confusion_matrix": {
+        "tp": 2150,
+        "tn": 5895,
+        "fp": 25,
+        "fn": 11
+      }
+    },
+    {
+      "strategy": "smote",
+      "model": "random_forest",
+      "train_rows_after_resampling": 55248,
+      "train_class_counts_after": {
+        "0": 27624,
+        "1": 27624
+      },
+      "resample_time_sec": 0.855,
+      "training_time_sec": 8.208,
+      "accuracy": 0.9976,
+      "precision": 0.9954,
+      "recall": 0.9958,
+      "f1": 0.9956,
+      "roc_auc": 0.9997,
+      "pr_auc": 0.9991,
+      "false_positive_rate": 0.0017,
+      "false_negative_rate": 0.0042,
+      "confusion_matrix": {
+        "tp": 2152,
+        "tn": 5910,
+        "fp": 10,
+        "fn": 9
+      }
+    }
+  ],
+  "best_strategy_by_model": {
+    "logistic_regression": {
+      "strategy": "class_weight",
+      "f1": 0.8414,
+      "recall": 0.9292
+    },
+    "decision_tree": {
+      "strategy": "none",
+      "f1": 0.9924,
+      "recall": 0.9931
+    },
+    "random_forest": {
+      "strategy": "smote",
+      "f1": 0.9956,
+      "recall": 0.9958
+    }
+  }
+}

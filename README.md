@@ -1,184 +1,119 @@
-# Cyber Attack Detection Using Optimized Machine Learning Models and Ensemble Methods
+# AI-Based Network Intrusion Detection System
+
+**Detecting cyber-attacks in network flows with optimized machine-learning models and a comparison of ensemble methods — on the real CIC-IDS2017 dataset.**
 
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com/)
-[![React 18](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-3178C6.svg)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4%2B-38B2AC.svg)](https://tailwindcss.com/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-1.7-F7931E.svg)](https://scikit-learn.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-3.x-189FDD.svg)](https://xgboost.readthedocs.io/)
+[![Optuna](https://img.shields.io/badge/Optuna-TPE-3B5BDB.svg)](https://optuna.org/)
 [![SHAP](https://img.shields.io/badge/Explainability-SHAP-FF6F00.svg)](https://shap.readthedocs.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688.svg)](https://fastapi.tiangolo.com/)
+[![React 18](https://img.shields.io/badge/React-18-61DAFB.svg)](https://reactjs.org/)
 
-> **Final-Year Academic Machine Learning Capstone** investigating defensive network intrusion detection, Bayesian hyperparameter optimization (Optuna), multi-paradigm ensemble methods (Voting, Bagging, Boosting, Stacking), zero data leakage pipelines, and Explainable AI (SHAP).
-
----
-
-## 1. Project Abstract
-
-Network Intrusion Detection Systems (NIDS) are a critical line of defense against modern cyber attacks. While traditional signature-based detection fails against zero-day and polymorphic exploits, machine learning offers behavioral anomaly detection. This research evaluates whether **Ensemble Learning methods (Voting, Bagging, Boosting, Stacking)** outperform individually optimized models in accuracy, attack recall, false alarm minimization, latency, and robustness.
-
-The system is evaluated on the benchmark **CIC-IDS2017** dataset schema and features a complete end-to-end software stack comprising a **FastAPI backend**, an interactive **React SOC Dashboard**, and an explainability engine powered by **SHAP**.
+> **Start here:** [`docs/walkthrough.md`](docs/walkthrough.md) explains what was done, in what order, and what came out — with the numbers. [`docs/syllabus-mapping.md`](docs/syllabus-mapping.md) maps every course topic to the exact code and result. [`docs/results.md`](docs/results.md) is generated from the experiment artifacts.
 
 ---
 
-## 2. System Architecture
+## 1. What this project does
+
+A network flow is a summary of one conversation between two hosts — how many packets, how big, how fast, which TCP flags. The task: given 70 such statistics from CICFlowMeter, decide **BENIGN or ATTACK**.
+
+The project compares **seven individual algorithms** (Logistic Regression, KNN, Decision Tree, SVM, Random Forest, Extra Trees, XGBoost), **three hyperparameter-search strategies** (Grid, Random, Bayesian/Optuna), **four imbalance strategies** (none, class weights, under-sampling, SMOTE), **five feature-selection/reduction methods** (correlation filter, mutual information, tree importance, ANOVA, PCA) and **seven ensembles** (hard/soft voting, bagging, AdaBoost, gradient boosting, stacking, weighted blend) — all on identical, leakage-free splits of a 55,720-flow sample of the real CIC-IDS2017 corpus that keeps all 15 traffic classes.
+
+Every number in this README, the docs and the dashboard is produced by code from the experiment artifacts. Nothing is typed in by hand.
+
+## 2. Pipeline
 
 ```
-                  ┌─────────────────────────────────────────┐
-                  │    Network Flow Dataset (CIC-IDS2017)   │
-                  └────────────────────┬────────────────────┘
-                                       │
-                                       ▼
-                  ┌─────────────────────────────────────────┐
-                  │      Data Sanitization & Cleaning       │
-                  │   (Inf/NaN Imputation, Constant Purge)  │
-                  └────────────────────┬────────────────────┘
-                                       │
-                                       ▼
-                  ┌─────────────────────────────────────────┐
-                  │  Zero-Leakage Stratified Splitting      │
-                  │       (70% Train / 15% Val / 15% Test)  │
-                  └────────────────────┬────────────────────┘
-                                       │
-                                       ▼
-                  ┌─────────────────────────────────────────┐
-                  │ Preprocessing & Feature Selection (Fit) │
-                  │  (StandardScaler, Correlation, MI, PCA) │
-                  └────────────────────┬────────────────────┘
-                                       │
-                       ┌───────────────┴───────────────┐
-                       ▼                               ▼
-        ┌─────────────────────────────┐ ┌─────────────────────────────┐
-        │     Baseline ML Models      │ │    Hyperparameter Tuning    │
-        │ (LR, DT, RF, SVM, KNN, XGB) │ │ (Optuna 5-Fold Stratified)  │
-        └──────────────┬──────────────┘ └──────────────┬──────────────┘
-                       │                               │
-                       └───────────────┬───────────────┘
-                                       │
-                                       ▼
-                  ┌─────────────────────────────────────────┐
-                  │       Ensemble Learning Synthesis       │
-                  │  - Voting (Hard & Soft)                 │
-                  │  - Bagging (Random Forest, Extra Trees) │
-                  │  - Boosting (AdaBoost, GradBoost, XGB)  │
-                  │  - Stacking (OOF Meta-Learner Scheme)   │
-                  └────────────────────┬────────────────────┘
-                                       │
-                                       ▼
-                  ┌─────────────────────────────────────────┐
-                  │     Untouched Test-Set Evaluation       │
-                  │ (F1, Recall, ROC-AUC, FPR, FNR, Latency)│
-                  └────────────────────┬────────────────────┘
-                                       │
-                       ┌───────────────┴───────────────┐
-                       ▼                               ▼
-        ┌─────────────────────────────┐ ┌─────────────────────────────┐
-        │   FastAPI Backend & DB      │ │   SHAP Explainability (XAI) │
-        │   - Real-time Flow Predict  │ │   - Global Importance Plots │
-        │   - Batch CSV Telemetry     │ │   - Local Waterfall Vectors │
-        └──────────────┬──────────────┘ └──────────────┬──────────────┘
-                       │                               │
-                       └───────────────┬───────────────┘
-                                       │
-                                       ▼
-                  ┌─────────────────────────────────────────┐
-                  │ React 18 SOC Dashboard & Leaderboard    │
-                  └─────────────────────────────────────────┘
+CIC-IDS2017 (8 day files, 2.83 M flows)
+   └─ build_dataset.py     class-capped stratified sample → 55,720 flows, 28 % attack, 15 classes
+       └─ pipeline.py      clean (Inf/NaN, duplicates, constants) → encode → split 70/15/15 → fit scaler on TRAIN only
+           └─ run_all_experiments.py
+                 1  feature selection benchmark (+ PCA, + Destination-Port ablation)
+                 2  7 baselines + 5-fold stratified CV
+                 3  imbalance study: none / class_weight / under-sample / SMOTE
+                 4  Grid vs Random vs Optuna-TPE tuning of RF and XGBoost (same CV, same objective)
+                 5  ensembles: voting ×2, bagging, AdaBoost, gradient boosting, stacking, weighted
+                 6  per-attack-type recall for every model
+                 7  bootstrap 95 % CIs + multi-seed retraining
+                 8  SHAP global explanation
+                 9  master_comparison.json · results.csv · presets.json · research_conclusions.json
+               └─ generate_figures.py → docs/figures/     render_results_docs.py → docs/results.md + table below
+                    └─ FastAPI (/api/predict, /api/explain, /api/experiments/…) → React dashboard
 ```
 
----
+## 3. Leaderboard
 
-## 3. Key Findings (RQ1 - RQ6)
+<!-- LEADERBOARD:START -->
+_Run the experiments and `python -m ml.training.render_results_docs` to fill this table._
+<!-- LEADERBOARD:END -->
 
-1. **RQ1 (Baselines)**: Individual algorithms provide strong baseline accuracy; tree-based models and SVM establish solid discriminative boundaries.
-2. **RQ2 (Feature Selection)**: Correlation filtering pruned 34 redundant features (from 61 down to 27) with zero degradation in $F_1$-score, yielding a **~32% speedup in training throughput**.
-3. **RQ3 (Optuna Tuning)**: Bayesian hyperparameter optimization systematically reduced false negatives, improving $F_1$-scores across candidate models.
-4. **RQ4 (Ensemble Superiority)**: Ensembles (specifically Stacking and Soft Voting) consistently outperformed single models by synthesizing diverse inductive biases.
-5. **RQ5 (Trade-Off Strategy)**: **Stacking** achieved peak attack recall ($100.00\%$), while **Soft Voting** provided the best balance of ultra-low inference latency ($1.85\text{ ms} / 1\text{k flows}$) and $1.0000$ $F_1$-score.
-6. **RQ6 (Explainable AI)**: SHAP verified that classifications are governed by authentic network protocol signals (e.g. volumetric throughput and TCP flag anomalies).
+Full tables (CV, feature selection, search comparison, imbalance, per-attack-type recall, stability, SHAP) and all 15 figures: [`docs/results.md`](docs/results.md).
 
----
+## 4. Key findings
 
-## 4. Master Evaluation Leaderboard
+<!-- KEY-FINDINGS:START -->
+_Filled from `research_conclusions.json` after the run._
+<!-- KEY-FINDINGS:END -->
 
-| Model | Paradigm | Accuracy | Attack Recall | Precision | $F_1$-Score | ROC-AUC | FPR | Training Time | Latency (ms/1k) |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Stacking Classifier** | Ensemble | **100.00%** | **100.00%** | **100.00%** | **1.0000** | **1.0000** | **0.0000** | 1.82s | 3.12ms |
-| **Voting (Soft)** | Ensemble | **100.00%** | **100.00%** | **100.00%** | **1.0000** | **1.0000** | **0.0000** | 0.94s | 1.85ms |
-| **Voting (Hard)** | Ensemble | **100.00%** | **100.00%** | **100.00%** | **1.0000** | **1.0000** | **0.0000** | 0.88s | 1.70ms |
-| **Bagging (ExtraTrees)**| Ensemble | **100.00%** | **100.00%** | **100.00%** | **1.0000** | **1.0000** | **0.0000** | 0.18s | 0.85ms |
-| **Optimized XGBoost** | Optimized| 99.89% | 99.75% | 100.00% | **0.9988** | 0.9998 | 0.0000 | 0.16s | 0.42ms |
-| **Optimized Random Forest** | Optimized| 99.78% | 99.75% | 99.75% | **0.9975** | 0.9997 | 0.0020 | 0.22s | 0.74ms |
-| **Baseline Random Forest** | Baseline | 99.67% | 99.51% | 99.75% | **0.9963** | 0.9992 | 0.0020 | 0.17s | 0.71ms |
-| **Baseline XGBoost** | Baseline | 99.89% | 99.75% | 100.00% | **0.9988** | 0.9996 | 0.0000 | 0.18s | 0.41ms |
-| **Support Vector Machine** | Baseline | 100.00% | 100.00% | 100.00% | **1.0000** | 1.0000 | 0.0000 | 0.25s | 1.20ms |
-| **Decision Tree** | Baseline | 99.89% | 100.00% | 99.75% | **0.9988** | 0.9990 | 0.0020 | 0.07s | 0.12ms |
-| **Logistic Regression** | Baseline | 100.00% | 100.00% | 100.00% | **1.0000** | 1.0000 | 0.0000 | 0.01s | 0.08ms |
-| **AdaBoost** | Ensemble | 99.33% | 98.77% | 99.75% | **0.9926** | 0.9995 | 0.0020 | 0.15s | 0.35ms |
+## 5. Quick start
 
-*All results measured empirically on untouched test data with fixed random seeds.*
-
----
-
-## 5. Quick Start & Execution
-
-### 1. Installation
 ```bash
-# Clone or navigate to the repository
-cd ml_capstone
-
-# Install Python dependencies
 pip install -r requirements.txt
 
-# Install Frontend dependencies
-cd frontend && npm install && cd ..
+# 1. data — the 55,720-flow CIC-IDS2017 sample is committed (ml/data/raw/cicids2017_sample.csv).
+#    Only rebuild it if you want different caps (one-off ~885 MB download):
+#    python -m ml.data.build_dataset --download --build --benign-rows 40000 --attack-cap 1500
+
+# 2. preprocess + split (leakage-free)
+python -m ml.preprocessing.pipeline
+
+# 3. every experiment (~1 h on 8 cores; add --quick for a 4-minute smoke test)
+python -m ml.training.run_all_experiments
+
+# 4. figures + docs
+python -m ml.training.generate_figures
+python -m ml.training.render_results_docs
+
+# 5. tests
+python -m pytest tests/ -q
+
+# 6. app
+uvicorn backend.app.main:app --port 8000 --reload      # API + Swagger at http://localhost:8000/docs
+cd frontend && npm install && npm run dev               # dashboard at http://localhost:5173
 ```
 
-### 2. Dataset Setup & Training
-```bash
-# Optional: Place official CIC-IDS2017 CSVs in ml/data/raw/
-# (If omitted, a strictly labeled synthetic development fixture matching the 78-feature schema is used automatically)
+Details: [`docs/reproducibility.md`](docs/reproducibility.md), [`DATASET_SETUP.md`](DATASET_SETUP.md).
 
-# Run full end-to-end experiment pipeline:
-python ml/training/run_all_experiments.py
+## 6. Documentation
+
+| Document | What it answers |
+|:--|:--|
+| [walkthrough.md](docs/walkthrough.md) | **What happened and how** — the narrative, step by step, with numbers |
+| [syllabus-mapping.md](docs/syllabus-mapping.md) | Where each course topic (missing values, encoding, scaling, PCA, feature selection, imbalance, LR/KNN/DT/SVM, bagging/boosting, metrics, CV, grid search, tuning) lives in the code |
+| [results.md](docs/results.md) | Every table and figure, generated from the artifacts |
+| [presentation-script.md](docs/presentation-script.md) | A 10-minute talk with slide-by-slide notes |
+| [viva-defense-guide.md](docs/viva-defense-guide.md) | Likely examiner questions and the answers the evidence supports |
+| [methodology.md](docs/methodology.md) | Workflow, design principles, research questions, statistical protocol |
+| [dataset.md](docs/dataset.md) · [preprocessing.md](docs/preprocessing.md) | CIC-IDS2017, its quirks, the zero-leakage protocol |
+| [feature-selection.md](docs/feature-selection.md) · [model-training.md](docs/model-training.md) · [ensemble-methods.md](docs/ensemble-methods.md) | The methods, with the maths |
+| [evaluation.md](docs/evaluation.md) · [explainable-ai.md](docs/explainable-ai.md) | Metrics, uncertainty, SHAP |
+| [architecture.md](docs/architecture.md) · [reproducibility.md](docs/reproducibility.md) | System design; the four commands that rebuild everything |
+| [CLOUD_HANDOFF.md](docs/CLOUD_HANDOFF.md) | How to finish the 1–2 h benchmark run unattended on Claude Code (web), with the exact prompt |
+
+Notebooks mirroring the pipeline stages are in [`notebooks/`](notebooks/) (`01_eda` … `07_ensemble_comparison`).
+
+## 7. Repository layout
+
+```
+ml/            data/ · preprocessing/ · feature_engineering/ · models/ · training/ · explainability/ · artifacts/
+backend/app/   FastAPI service (api/, services/ml_service.py, schemas/, database/)
+frontend/src/  React + Tailwind dashboard (pages/, components/, services/api.ts)
+docs/          documentation + figures/
+notebooks/     7 notebooks
+tests/         unit tests (run anywhere) + integration tests (need trained artifacts)
 ```
 
-### 3. Run Application
-```bash
-# Terminal 1: Start FastAPI Backend (Port 8000)
-uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
+## 8. License & scope
 
-# Terminal 2: Start React SOC Dashboard (Port 5173)
-cd frontend && npm run dev
-```
-
-Open your browser at `http://localhost:5173` to explore the interactive dashboard.
-
----
-
-## 6. Running Tests
-```bash
-python -m pytest tests/ -v
-```
-
----
-
-## 7. Project Documentation Suite
-
-Detailed academic documentation is available in `docs/`:
-- [Project Overview](docs/project-overview.md)
-- [Research Methodology](docs/methodology.md)
-- [Dataset Guide & Schema](docs/dataset.md)
-- [Preprocessing & Zero-Leakage Protocol](docs/preprocessing.md)
-- [Feature Selection & PCA](docs/feature-selection.md)
-- [Model Training & Optuna Tuning](docs/model-training.md)
-- [Ensemble Learning Foundations](docs/ensemble-methods.md)
-- [Evaluation Metrics & Asymmetric Cost](docs/evaluation.md)
-- [Explainable AI (SHAP)](docs/explainable-ai.md)
-- [System Architecture](docs/architecture.md)
-- [Empirical Results & Synthesis](docs/results.md)
-- [Viva Defense & Examination Guide](docs/viva-defense-guide.md)
-
----
-
-## 8. License & Academic Disclaimer
-This project is developed solely for defensive cybersecurity research and machine learning education. No offensive exploits or active traffic generation tools are included. Licensed under the [MIT License](LICENSE).
+MIT. Defensive research and coursework only: the repository contains no exploits or traffic generators — only a detector trained on a public benchmark.

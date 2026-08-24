@@ -1,0 +1,1493 @@
+{
+  "models": {
+    "logistic_regression": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 44,
+        "recall": 0.9778
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 43,
+        "recall": 0.9773
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 43,
+        "recall": 0.9773
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 40,
+        "recall": 0.9524
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 39,
+        "recall": 0.975
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 27,
+        "recall": 0.7105
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 34,
+        "recall": 0.9444
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 969,
+        "recall": 0.8866
+      }
+    ],
+    "decision_tree": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 44,
+        "recall": 0.9778
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 42,
+        "recall": 1.0
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 36,
+        "recall": 0.9474
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 36,
+        "recall": 1.0
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1086,
+        "recall": 0.9936
+      }
+    ],
+    "random_forest": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 42,
+        "recall": 1.0
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 37,
+        "recall": 0.9737
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 35,
+        "recall": 0.9722
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1092,
+        "recall": 0.9991
+      }
+    ],
+    "extra_trees": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 42,
+        "recall": 1.0
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 36,
+        "recall": 0.9474
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 36,
+        "recall": 1.0
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1087,
+        "recall": 0.9945
+      }
+    ],
+    "support_vector_machine": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 43,
+        "recall": 0.9773
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 42,
+        "recall": 0.9767
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 41,
+        "recall": 0.9762
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 39,
+        "recall": 0.975
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 29,
+        "recall": 0.7632
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 34,
+        "recall": 0.9444
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 979,
+        "recall": 0.8957
+      }
+    ],
+    "k_nearest_neighbors": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 43,
+        "recall": 0.9556
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 43,
+        "recall": 0.9773
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 42,
+        "recall": 0.9767
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 41,
+        "recall": 0.9762
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 35,
+        "recall": 0.875
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 34,
+        "recall": 0.8947
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 35,
+        "recall": 0.9722
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 24,
+        "recall": 0.9231
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1070,
+        "recall": 0.979
+      }
+    ],
+    "xgboost": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 42,
+        "recall": 1.0
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 38,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 35,
+        "recall": 0.9722
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 22,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1092,
+        "recall": 0.9991
+      }
+    ],
+    "optimized_random_forest": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 42,
+        "recall": 1.0
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 37,
+        "recall": 0.9737
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 35,
+        "recall": 0.9722
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1093,
+        "recall": 1.0
+      }
+    ],
+    "optimized_xgboost": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 42,
+        "recall": 1.0
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 38,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 36,
+        "recall": 1.0
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1091,
+        "recall": 0.9982
+      }
+    ],
+    "voting_hard": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 43,
+        "recall": 0.9773
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 41,
+        "recall": 0.9762
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 29,
+        "recall": 0.7632
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 34,
+        "recall": 0.9444
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1091,
+        "recall": 0.9982
+      }
+    ],
+    "voting_soft": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 42,
+        "recall": 1.0
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 36,
+        "recall": 0.9474
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 35,
+        "recall": 0.9722
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1088,
+        "recall": 0.9954
+      }
+    ],
+    "bagging_extra_trees": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 42,
+        "recall": 1.0
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 36,
+        "recall": 0.9474
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 36,
+        "recall": 1.0
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1090,
+        "recall": 0.9973
+      }
+    ],
+    "adaboost": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 42,
+        "recall": 0.9333
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 43,
+        "recall": 0.9773
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 37,
+        "recall": 0.8409
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 40,
+        "recall": 0.9302
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 41,
+        "recall": 0.9762
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 23,
+        "recall": 0.575
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 12,
+        "recall": 0.3158
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 34,
+        "recall": 0.9444
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1062,
+        "recall": 0.9716
+      }
+    ],
+    "gradient_boosting": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 42,
+        "recall": 1.0
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 37,
+        "recall": 0.9737
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 35,
+        "recall": 0.9722
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1092,
+        "recall": 0.9991
+      }
+    ],
+    "stacking": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 42,
+        "recall": 1.0
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 38,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 36,
+        "recall": 1.0
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1093,
+        "recall": 1.0
+      }
+    ],
+    "weighted_ensemble": [
+      {
+        "class": "DoS Slowhttptest",
+        "is_attack": true,
+        "n_test": 45,
+        "n_detected": 45,
+        "recall": 1.0
+      },
+      {
+        "class": "DDoS",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - Brute Force",
+        "is_attack": true,
+        "n_test": 44,
+        "n_detected": 44,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS slowloris",
+        "is_attack": true,
+        "n_test": 43,
+        "n_detected": 43,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS GoldenEye",
+        "is_attack": true,
+        "n_test": 42,
+        "n_detected": 42,
+        "recall": 1.0
+      },
+      {
+        "class": "PortScan",
+        "is_attack": true,
+        "n_test": 40,
+        "n_detected": 40,
+        "recall": 1.0
+      },
+      {
+        "class": "Bot",
+        "is_attack": true,
+        "n_test": 38,
+        "n_detected": 38,
+        "recall": 1.0
+      },
+      {
+        "class": "DoS Hulk",
+        "is_attack": true,
+        "n_test": 36,
+        "n_detected": 36,
+        "recall": 1.0
+      },
+      {
+        "class": "FTP-Patator",
+        "is_attack": true,
+        "n_test": 26,
+        "n_detected": 26,
+        "recall": 1.0
+      },
+      {
+        "class": "SSH-Patator",
+        "is_attack": true,
+        "n_test": 25,
+        "n_detected": 25,
+        "recall": 1.0
+      },
+      {
+        "class": "Web Attack - XSS",
+        "is_attack": true,
+        "n_test": 22,
+        "n_detected": 21,
+        "recall": 0.9545
+      },
+      {
+        "class": "Web Attack - Sql Injection",
+        "is_attack": true,
+        "n_test": 2,
+        "n_detected": 2,
+        "recall": 1.0
+      },
+      {
+        "class": "BENIGN",
+        "is_attack": false,
+        "n_test": 1093,
+        "n_detected": 1091,
+        "recall": 0.9982
+      }
+    ]
+  },
+  "note": "Binary detector; recall per original CIC-IDS2017 category on the test split."
+}

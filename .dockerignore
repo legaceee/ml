@@ -1,0 +1,13 @@
+node_modules
+frontend/node_modules
+frontend/dist
+.git
+.pytest_cache
+__pycache__
+*.pyc
+ml/data/raw/cicids2017_full/
+ml/data/raw/*.csv
+ml/data/splits/
+docs/figures
+notebooks
+tests

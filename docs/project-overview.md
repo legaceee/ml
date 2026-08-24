@@ -1,23 +1,50 @@
-# Academic Project Overview: Cyber Attack Detection via Machine Learning
+# Project Overview: AI-Based Network Intrusion Detection
 
-## 1. Problem Statement
-Modern computer networks are continuously targeted by sophisticated, multi-vector cyber intrusions, including Distributed Denial-of-Service (DDoS) floods, brute-force credential stuffing (FTP/SSH Patator), automated port-scanning reconnaissance, and application-layer web attacks. Traditional Signature-Based Intrusion Detection Systems (SIDS) rely on deterministic pattern matching against known vulnerability signatures (e.g., Snort rules), rendering them ineffective against zero-day exploits, mutated payloads, and polymorphic attack vectors.
+## 1. Problem
 
-**Anomaly-based Machine Learning Intrusion Detection Systems (AIDS)** analyze continuous flow-based statistical properties (e.g., inter-arrival packet times, packet length distributions, TCP signaling flags) to detect behavioral deviations characteristic of malicious network traffic.
+Networks are attacked by denial-of-service floods, port scans, brute-force logins, botnets and web exploits. Signature-based intrusion detection (Snort-style rules) matches known byte patterns and misses anything new. **Anomaly-based ML detection** instead learns what benign and malicious *flows* look like — packet counts, byte rates, inter-arrival times, TCP flags, window sizes — and classifies traffic by behaviour.
 
----
+**Task**: given one bidirectional network flow described by 70 CICFlowMeter statistics, predict `BENIGN` or `ATTACK`.
 
-## 2. Core Research Hypothesis
+## 2. Data
 
-$$\text{Research Hypothesis: } \mathcal{H}_1$$
+Real **CIC-IDS2017** (University of New Brunswick): 5 days of captured traffic, 2,830,743 flows, 14 attack types. A class-capped stratified sample of 55,720 flows (28 % attack, every attack class present) is used so that all 18 models train in about an hour on a laptop. See `DATASET_SETUP.md`.
 
-> *"Ensemble machine learning architectures—specifically Stacking and Soft Voting meta-classifiers combining tree-based, linear, and margin-based base learners—provide significantly higher intrusion detection recall, lower false-positive rates (FPR), and superior generalization on network traffic than individual optimized machine learning models."*
+## 3. Hypothesis
 
----
+> Ensembles that combine tree, linear and kernel learners (voting, bagging, boosting, stacking) detect attacks with higher recall and lower false-positive rate than any individually tuned model — and the gain is measurable beyond seed noise.
 
-## 3. Key Contributions
-1. **Zero Data Leakage Pipeline**: Implements a strict train-only fitting protocol where preprocessing transformers, imputers, scalers, and feature selectors are fitted exclusively on the 70% training split.
-2. **Systematic Hyperparameter Optimization**: Employs Optuna with the Tree-structured Parzen Estimator (TPE) algorithm under 5-fold stratified cross-validation maximizing the $F_1$-score.
-3. **Comprehensive Ensemble Taxonomy**: Evaluates four core ensemble paradigms (Voting, Bagging, Boosting, and Stacking) against 7 baseline algorithms.
-4. **Explainable AI (XAI) Integration**: Deploys SHAP (SHapley Additive exPlanations) to provide game-theoretic local and global feature attribution for SOC analyst verification.
-5. **Statistical Stability Verification**: Assesses model performance stability across multiple random seeds ($\text{seeds} \in \{42, 123, 2024\}$) to ensure empirical findings are statistically sound.
+The project tests this hypothesis rather than assuming it: RQ4 reports the actual gap between the best ensemble and the best single model with bootstrap confidence intervals, whichever way it comes out.
+
+## 4. What was built
+
+| Layer | Content |
+|:--|:--|
+| **Data** | downloader + class-capped sampler; cleaning (Inf/NaN, duplicates, constant columns); leakage-free 70/15/15 split |
+| **Feature engineering** | correlation filter, mutual information, RF importance, ANOVA, PCA — each benchmarked; `Destination Port` ablation |
+| **Imbalance** | none vs class weights vs under-sampling vs SMOTE, train-only |
+| **Models** | LR, KNN, DT, SVM, RF, ET, XGBoost; Grid / Random / Optuna-TPE tuning; hard/soft voting, bagging, AdaBoost, gradient boosting, stacking, weighted blend |
+| **Evaluation** | accuracy, precision, recall, F1, ROC/PR-AUC, FPR/FNR, latency; 5-fold CV; bootstrap CIs; multi-seed; per-attack-type recall; SHAP |
+| **Serving** | FastAPI (`/api/predict`, `/api/explain`, `/api/experiments/…`), React + Tailwind dashboard with a Course-Topics Lab page |
+| **Reproducibility** | four commands regenerate data, models, figures and docs; results docs are rendered from JSON |
+
+## 5. Headline findings
+
+Numbers live in `docs/results.md` (generated) and the narrative in `docs/walkthrough.md`. In short: tree-based models separate attacks almost perfectly, the linear model does not; tuning and ensembling yield small but consistent gains at very different costs; the practical deployment choice is the tuned XGBoost, with stacking when recall matters more than latency; the rarest web-attack categories are where residual misses concentrate.
+
+## 6. Repository map
+
+```
+ml/data/               build_dataset.py (download + sample), loader.py, generate_dev_sample.py (synthetic fallback)
+ml/preprocessing/      cleaning.py, encoding.py, scaling.py, resampling.py, pipeline.py
+ml/feature_engineering/ selection.py, dimensionality_reduction.py
+ml/models/             baselines.py, optimization.py (grid / random / optuna), ensembles.py
+ml/training/           evaluate.py, run_all_experiments.py, generate_figures.py, render_results_docs.py
+ml/explainability/     shap_analysis.py
+ml/artifacts/          models/, metrics/*.json, experiments/results.csv + research_conclusions.json
+backend/app/           FastAPI service (api/, services/ml_service.py, schemas/, database/)
+frontend/src/          React pages (Dashboard, Predictor, Leaderboard, Course Lab, Research Findings, …)
+notebooks/             7 notebooks mirroring the pipeline stages
+docs/                  this documentation + figures/
+tests/                 unit + integration tests
+```

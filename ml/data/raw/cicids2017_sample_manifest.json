@@ -1,0 +1,57 @@
+{
+  "source": "CIC-IDS2017 MachineLearningCSV (UNB) via Hugging Face mirror c01dsnap/CIC-IDS2017",
+  "day_files": [
+    "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+    "Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+    "Friday-WorkingHours-Morning.pcap_ISCX.csv",
+    "Monday-WorkingHours.pcap_ISCX.csv",
+    "Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+    "Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+    "Tuesday-WorkingHours.pcap_ISCX.csv",
+    "Wednesday-workingHours.pcap_ISCX.csv"
+  ],
+  "full_corpus_rows": 2830743,
+  "full_corpus_class_distribution": {
+    "BENIGN": 2273097,
+    "DoS Hulk": 231073,
+    "PortScan": 158930,
+    "DDoS": 128027,
+    "DoS GoldenEye": 10293,
+    "FTP-Patator": 7938,
+    "SSH-Patator": 5897,
+    "DoS slowloris": 5796,
+    "DoS Slowhttptest": 5499,
+    "Bot": 1966,
+    "Web Attack - Brute Force": 1507,
+    "Web Attack - XSS": 652,
+    "Infiltration": 36,
+    "Web Attack - Sql Injection": 21,
+    "Heartbleed": 11
+  },
+  "sampling_strategy": {
+    "type": "class-capped stratified random sample",
+    "benign_rows": 40000,
+    "attack_cap_per_class": 1500,
+    "random_state": 42,
+    "rationale": "Keep every rare attack class in full while bounding total size so that RBF-SVM, KNN and 5-fold stacking remain tractable on a single workstation."
+  },
+  "sample_rows": 55720,
+  "sample_class_distribution": {
+    "BENIGN": 40000,
+    "DoS Hulk": 1500,
+    "DoS GoldenEye": 1500,
+    "Bot": 1500,
+    "Web Attack - Brute Force": 1500,
+    "DDoS": 1500,
+    "DoS slowloris": 1500,
+    "DoS Slowhttptest": 1500,
+    "SSH-Patator": 1500,
+    "FTP-Patator": 1500,
+    "PortScan": 1500,
+    "Web Attack - XSS": 652,
+    "Infiltration": 36,
+    "Web Attack - Sql Injection": 21,
+    "Heartbleed": 11
+  },
+  "sample_attack_ratio": 0.28212491026561376
+}

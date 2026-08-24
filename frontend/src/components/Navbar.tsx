@@ -8,8 +8,7 @@ import {
   BookOpen,
   Database,
   UploadCloud,
-  BarChart3
-} from "lucide-react";
+  BarChart3, FlaskConical } from "lucide-react";
 
 interface NavbarProps {
   activeTab: string;
@@ -26,7 +25,8 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, isSynth
     { id: "optimization", label: "Optuna Optimization", icon: Sparkles },
     { id: "ensemble", label: "Ensemble Deep-Dive", icon: Layers },
     { id: "explainability", label: "SHAP Explainability", icon: Search },
-    { id: "research", label: "Research Findings (RQ1-6)", icon: BookOpen },
+    { id: "research", label: "Research Findings (RQ1-8)", icon: BookOpen },
+    { id: "courselab", label: "Course Topics Lab", icon: FlaskConical },
     { id: "dataset", label: "Dataset Explorer", icon: Database },
   ];
 

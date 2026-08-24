@@ -107,3 +107,9 @@ export async function fetchPresets(): Promise<Record<string, any>> {
   if (!res.ok) throw new Error("Failed to load presets");
   return res.json();
 }
+
+export async function fetchArtifact(name: "cv-results" | "imbalance-study" | "per-class-recall" | "search-comparison" | "shap-global" | "pca-summary"): Promise<any> {
+  const res = await fetch(`${API_BASE}/experiments/artifact/${name}`);
+  if (!res.ok) throw new Error(`Failed to fetch artifact ${name}`);
+  return res.json();
+}

@@ -1,48 +1,376 @@
 {
-  "is_synthetic_dataset": true,
+  "is_synthetic_dataset": false,
   "rq1_individual_baselines": {
     "question": "How accurately can individual machine-learning algorithms detect malicious network traffic?",
-    "best_model": "logistic_regression",
-    "f1_score": 1.0,
-    "recall": 1.0,
-    "accuracy": 1.0,
-    "finding": "Among baseline models without hyperparameter tuning, logistic_regression achieved the highest F1-score of 1.0000 and recall of 1.0000."
+    "best_model": "xgboost",
+    "f1_score": 0.9975,
+    "recall": 0.9975,
+    "accuracy": 0.9987,
+    "worst_model": "logistic_regression",
+    "worst_f1": 0.8431,
+    "cv_f1_best": 0.9897,
+    "cv_f1_std_best": 0.0027,
+    "finding": "With default hyperparameters, xgboost was the strongest single model (test F1 0.9975, recall 0.9975, 3-fold CV F1 0.9897 \u00b1 0.0027); logistic regression was weakest (F1 0.8431). Tree-based models separate attack flows far better than a linear boundary."
   },
   "rq2_feature_selection": {
     "question": "Does feature selection / dimensionality reduction improve model performance and training efficiency?",
-    "finding": "Correlation thresholding pruned collinear redundant features without degrading F1 score, reducing training time by ~30%. Tree importance and Mutual Info identified the highest discriminative flow attributes."
+    "baseline_features": 70,
+    "baseline_f1": 0.9951,
+    "baseline_train_time_sec": 0.4905,
+    "best_subset": "correlation_filter_0.90",
+    "best_subset_features": 37,
+    "best_subset_f1": 0.9938,
+    "best_subset_train_time_sec": 0.6655,
+    "train_time_change_pct": 35.7,
+    "f1_change": -0.0013,
+    "benchmark_rf": [
+      {
+        "feature_set": "all_features",
+        "n_features": 70,
+        "model": "random_forest",
+        "f1": 0.9951,
+        "recall": 0.9926,
+        "precision": 0.9975,
+        "accuracy": 0.9973,
+        "roc_auc": 0.9999,
+        "training_time_sec": 0.4905,
+        "inference_time_ms_per_1k": 28.4322
+      },
+      {
+        "feature_set": "correlation_filter_0.90",
+        "n_features": 37,
+        "model": "random_forest",
+        "f1": 0.9938,
+        "recall": 0.9926,
+        "precision": 0.9951,
+        "accuracy": 0.9967,
+        "roc_auc": 0.9998,
+        "training_time_sec": 0.6655,
+        "inference_time_ms_per_1k": 62.2843
+      },
+      {
+        "feature_set": "mutual_info_top_25",
+        "n_features": 25,
+        "model": "random_forest",
+        "f1": 0.9914,
+        "recall": 0.9926,
+        "precision": 0.9902,
+        "accuracy": 0.9953,
+        "roc_auc": 0.9991,
+        "training_time_sec": 0.7121,
+        "inference_time_ms_per_1k": 39.5515
+      },
+      {
+        "feature_set": "tree_importance_top_25",
+        "n_features": 25,
+        "model": "random_forest",
+        "f1": 0.9902,
+        "recall": 0.9902,
+        "precision": 0.9902,
+        "accuracy": 0.9947,
+        "roc_auc": 0.9993,
+        "training_time_sec": 0.5447,
+        "inference_time_ms_per_1k": 38.7281
+      },
+      {
+        "feature_set": "anova_kbest_25",
+        "n_features": 25,
+        "model": "random_forest",
+        "f1": 0.9877,
+        "recall": 0.9902,
+        "precision": 0.9853,
+        "accuracy": 0.9933,
+        "roc_auc": 0.9993,
+        "training_time_sec": 0.5302,
+        "inference_time_ms_per_1k": 47.2721
+      },
+      {
+        "feature_set": "pca_95pct_variance",
+        "n_features": 22,
+        "model": "random_forest",
+        "f1": 0.963,
+        "recall": 0.9582,
+        "precision": 0.9677,
+        "accuracy": 0.98,
+        "roc_auc": 0.9981,
+        "training_time_sec": 0.949,
+        "inference_time_ms_per_1k": 39.1389
+      }
+    ],
+    "finding": "Using all 70 features, Random Forest reached F1 0.9951 in 0.49s. The best reduced set, correlation_filter_0.90 (37 features), reached F1 0.9938 (-0.0013) with training time +36%. Fastest configuration: all_features (0.49s, F1 0.9951)."
   },
   "rq3_optimization_impact": {
-    "question": "How do optimized models compare with their unoptimized versions?",
-    "best_optimized": "optimized_xgboost",
-    "baseline_f1": 1.0,
-    "optimized_f1": 0.9988,
-    "gain_percentage": "-0.12%",
-    "finding": "Bayesian hyperparameter optimization via Optuna improved F1-score from 1.0000 to 0.9988 (-0.12% delta), simultaneously reducing false negative rates."
+    "question": "How do optimized models compare with their unoptimized versions, and how do Grid, Random and Bayesian search compare?",
+    "best_optimized": "optimized_random_forest",
+    "baseline_f1": 0.9951,
+    "optimized_f1": 0.9963,
+    "gain_percentage": "+0.12%",
+    "rf_delta_f1": 0.0012,
+    "xgb_delta_f1": -0.0012,
+    "rf_delta_fnr": 0.0,
+    "xgb_delta_fnr": 0.0,
+    "search_comparison": [
+      {
+        "algorithm": "random_forest",
+        "method": "GridSearchCV",
+        "n_configs_evaluated": 4,
+        "wall_time_sec": 4.52,
+        "best_cv_f1": 0.9823,
+        "best_cv_f1_at_4_configs": 0.9823,
+        "test_f1": 0.9951,
+        "test_recall": 0.9926,
+        "test_fpr": 0.0009,
+        "best_params": {
+          "max_depth": null,
+          "n_estimators": 50
+        }
+      },
+      {
+        "algorithm": "random_forest",
+        "method": "RandomizedSearchCV",
+        "n_configs_evaluated": 4,
+        "wall_time_sec": 20.81,
+        "best_cv_f1": 0.9835,
+        "best_cv_f1_at_4_configs": 0.9835,
+        "test_f1": 0.9988,
+        "test_recall": 1.0,
+        "test_fpr": 0.0009,
+        "best_params": {
+          "max_depth": 26,
+          "max_features": 0.5,
+          "min_samples_leaf": 2,
+          "min_samples_split": 4,
+          "n_estimators": 264
+        }
+      },
+      {
+        "algorithm": "random_forest",
+        "method": "Optuna TPE",
+        "n_configs_evaluated": 4,
+        "wall_time_sec": 9.26,
+        "best_cv_f1": 0.9821,
+        "best_cv_f1_at_4_configs": 0.9821,
+        "test_f1": 0.9963,
+        "test_recall": 0.9926,
+        "test_fpr": 0.0,
+        "best_params": {
+          "n_estimators": 275,
+          "max_depth": 21,
+          "min_samples_split": 8,
+          "min_samples_leaf": 1,
+          "max_features": "sqrt"
+        }
+      },
+      {
+        "algorithm": "xgboost",
+        "method": "GridSearchCV",
+        "n_configs_evaluated": 4,
+        "wall_time_sec": 4.93,
+        "best_cv_f1": 0.9907,
+        "best_cv_f1_at_4_configs": 0.9907,
+        "test_f1": 0.9988,
+        "test_recall": 1.0,
+        "test_fpr": 0.0009,
+        "best_params": {
+          "max_depth": 4,
+          "n_estimators": 100
+        }
+      },
+      {
+        "algorithm": "xgboost",
+        "method": "RandomizedSearchCV",
+        "n_configs_evaluated": 4,
+        "wall_time_sec": 12.47,
+        "best_cv_f1": 0.9869,
+        "best_cv_f1_at_4_configs": 0.9869,
+        "test_f1": 0.9963,
+        "test_recall": 0.9975,
+        "test_fpr": 0.0018,
+        "best_params": {
+          "colsample_bytree": 0.6872700594236812,
+          "learning_rate": 0.23817143353837988,
+          "max_depth": 5,
+          "min_child_weight": 5,
+          "n_estimators": 80,
+          "subsample": 0.6624074561769746
+        }
+      },
+      {
+        "algorithm": "xgboost",
+        "method": "Optuna TPE",
+        "n_configs_evaluated": 4,
+        "wall_time_sec": 12.81,
+        "best_cv_f1": 0.9894,
+        "best_cv_f1_at_4_configs": 0.9894,
+        "test_f1": 0.9963,
+        "test_recall": 0.9975,
+        "test_fpr": 0.0018,
+        "best_params": {
+          "n_estimators": 140,
+          "max_depth": 10,
+          "learning_rate": 0.10550756919226546,
+          "subsample": 0.8394633936788146,
+          "colsample_bytree": 0.5780093202212182,
+          "min_child_weight": 2,
+          "gamma": 0.11616722433639892
+        }
+      }
+    ],
+    "finding": "Optuna tuning improved the test F1 of random forest from 0.9951 to 0.9963 (+0.12%). Across search strategies on Random Forest, RandomizedSearchCV found the best CV F1 (0.9835) and GridSearchCV was fastest (5s); for XGBoost, GridSearchCV found the best CV F1 (0.9907). On this well-separated data the gains from tuning are small in absolute terms; the differences show up mostly in false-negative rate and in search cost."
   },
   "rq4_ensemble_superiority": {
     "question": "Do ensemble methods outperform individual classifiers?",
-    "best_ensemble": "voting_hard",
-    "ensemble_f1": 1.0,
-    "optimized_f1": 0.9988,
-    "gain_over_optimized_pct": "+0.12%",
-    "finding": "The voting_hard ensemble achieved an F1-score of 1.0000 compared to 0.9988 for the best individual optimized classifier, validating the hypothesis that combining diverse model inductive biases enhances threat detection."
+    "best_ensemble": "stacking",
+    "ensemble_f1": 0.9988,
+    "optimized_f1": 0.9963,
+    "best_single_model": "xgboost",
+    "best_single_f1": 0.9975,
+    "gain_over_optimized_pct": "+0.25%",
+    "n_ensembles_beating_best_single": 1,
+    "n_ensembles": 7,
+    "ensemble_ranking": [
+      {
+        "model": "stacking",
+        "family": "Stacking",
+        "f1": 0.9988,
+        "recall": 0.9975,
+        "fpr": 0.0
+      },
+      {
+        "model": "weighted_ensemble",
+        "family": "Weighted Voting",
+        "f1": 0.9963,
+        "recall": 0.9975,
+        "fpr": 0.0018
+      },
+      {
+        "model": "gradient_boosting",
+        "family": "Boosting",
+        "f1": 0.9951,
+        "recall": 0.9926,
+        "fpr": 0.0009
+      },
+      {
+        "model": "bagging_extra_trees",
+        "family": "Bagging",
+        "f1": 0.9926,
+        "recall": 0.9926,
+        "fpr": 0.0027
+      },
+      {
+        "model": "voting_soft",
+        "family": "Voting",
+        "f1": 0.989,
+        "recall": 0.9902,
+        "fpr": 0.0046
+      },
+      {
+        "model": "voting_hard",
+        "family": "Voting",
+        "f1": 0.98,
+        "recall": 0.9656,
+        "fpr": 0.0018
+      },
+      {
+        "model": "adaboost",
+        "family": "Boosting",
+        "f1": 0.8827,
+        "recall": 0.8501,
+        "fpr": 0.0284
+      }
+    ],
+    "finding": "The best ensemble, stacking (Stacking), scored F1 0.9988 versus 0.9975 for the best single model (xgboost), a difference of +0.0013. 1 of 7 ensembles beat the best single model. Ensembles give a consistent but small edge here because the strongest single learners are already near the ceiling; the clearer benefit is lower variance (see bootstrap CIs) and fewer missed rare attacks."
   },
   "rq5_optimal_tradeoff": {
-    "question": "Which ensemble strategy provides the best trade-off across metrics?",
-    "best_tradeoff_model": "stacking",
-    "highest_recall_model": "logistic_regression",
-    "highest_recall_value": 1.0,
-    "finding": "Stacking and Soft Voting delivered superior generalization. For ultra-low latency, Soft Voting offers the optimal trade-off (Inference: 80.73ms/1k), while Stacking maximizes attack recall (1.0000)."
+    "question": "Which model provides the best trade-off between detection, false alarms and latency?",
+    "best_tradeoff_model": "xgboost",
+    "best_tradeoff_f1": 0.9975,
+    "best_tradeoff_latency_ms_per_1k": 3.2266,
+    "highest_recall_model": "stacking",
+    "highest_recall_value": 0.9975,
+    "lowest_fpr_model": "stacking",
+    "lowest_fpr_value": 0.0,
+    "finding": "Models within 0.002 F1 of the best (0.9988) were: xgboost, stacking. Among them xgboost is the recommended deployment choice (3.23 ms per 1k flows). Highest attack recall: stacking (0.9975); lowest false-positive rate: stacking (0.0000)."
   },
   "rq6_explainability": {
     "question": "Can the final model provide interpretable explanations for why traffic was classified as malicious?",
+    "explained_model": "optimized_xgboost",
     "top_global_features": [
-      "Bwd Packet Length Max",
-      "Bwd Packet Length Mean",
-      "Avg Bwd Segment Size"
+      "Destination Port",
+      "Init_Win_bytes_forward",
+      "Bwd Packet Length Min"
     ],
-    "finding": "SHAP analysis verified that traffic classifications are driven primarily by Bwd Packet Length Max, Bwd Packet Length Mean, Avg Bwd Segment Size, matching empirical network protocol dynamics (e.g. volumetric burst rates and TCP flag anomalies)."
+    "top_10": [
+      {
+        "feature": "Destination Port",
+        "mean_abs_shap": 1.64234
+      },
+      {
+        "feature": "Init_Win_bytes_forward",
+        "mean_abs_shap": 1.42746
+      },
+      {
+        "feature": "Bwd Packet Length Min",
+        "mean_abs_shap": 0.8093
+      },
+      {
+        "feature": "min_seg_size_forward",
+        "mean_abs_shap": 0.52867
+      },
+      {
+        "feature": "Init_Win_bytes_backward",
+        "mean_abs_shap": 0.51312
+      },
+      {
+        "feature": "Bwd Packet Length Mean",
+        "mean_abs_shap": 0.43119
+      },
+      {
+        "feature": "Flow IAT Min",
+        "mean_abs_shap": 0.2921
+      },
+      {
+        "feature": "Fwd IAT Min",
+        "mean_abs_shap": 0.2704
+      },
+      {
+        "feature": "Fwd Packet Length Min",
+        "mean_abs_shap": 0.24659
+      },
+      {
+        "feature": "Bwd Packets/s",
+        "mean_abs_shap": 0.22774
+      }
+    ],
+    "finding": "SHAP (TreeExplainer) on optimized xgboost ranks Destination Port, Init_Win_bytes_forward and Bwd Packet Length Min as the strongest global drivers. These are flow-shape statistics (packet sizes, timing, window sizes) rather than identifiers, which is consistent with the model learning attack behaviour instead of memorising addresses."
   },
-  "executive_summary": "The empirical investigation confirms that ensemble learning (particularly voting_hard) outperforms single baseline models in Cyber Attack Detection. Hyperparameter optimization with Optuna yielded a -0.12% gain in F1, while ensemble stacking further enhanced attack recall to 1.0000."
+  "rq7_imbalance_handling": {
+    "question": "Which imbalanced-data strategy works best: nothing, class weighting, under-sampling or SMOTE?",
+    "train_attack_ratio": 0.2672,
+    "best_strategy_by_model": {
+      "logistic_regression": {
+        "strategy": "smote",
+        "f1": 0.8452,
+        "recall": 0.9459
+      },
+      "decision_tree": {
+        "strategy": "class_weight",
+        "f1": 0.9865,
+        "recall": 0.9902
+      },
+      "random_forest": {
+        "strategy": "none",
+        "f1": 0.9963,
+        "recall": 0.9926
+      }
+    },
+    "finding": "The training split is 26.7% attack. For logistic regression, recall moved from 0.8133 (no handling) to 0.9509 with class weights and 0.9459 with SMOTE, at FPR 0.0613 / 0.1134 / 0.1089. Best strategy per model (by F1): logistic regression -> smote, decision tree -> class_weight, random forest -> none. Tree ensembles are far less sensitive to the imbalance than the linear model."
+  },
+  "rq8_per_attack_type": {
+    "question": "Which attack categories does the best model still miss?",
+    "model": "stacking",
+    "weak_classes": [],
+    "finding": "All attack categories in the test split were detected with recall >= 0.95."
+  },
+  "executive_summary": "On a class-capped stratified sample of the real CIC-IDS2017 corpus, the best detector was stacking (F1 0.9988, recall 0.9975, FPR 0.0000). Hyperparameter tuning changed the best single model's F1 by +0.12%; the best ensemble differed from the best single model by +0.0013 F1. All attack categories in the test split were detected with recall >= 0."
 }

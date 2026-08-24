@@ -1,82 +1,54 @@
-# Dataset Setup Guide: CIC-IDS2017 & Benchmark Datasets
+# Dataset Setup: CIC-IDS2017
 
-This document provides complete instructions for downloading, placing, and preparing official network intrusion datasets for the **Cyber Attack Detection ML Capstone**.
+This project trains on the **real** CIC-IDS2017 intrusion-detection benchmark from the Canadian Institute for Cybersecurity (University of New Brunswick).
 
----
-
-## 1. Primary Dataset: CIC-IDS2017
-
-The Canadian Institute for Cybersecurity (UNB) **CIC-IDS2017** dataset contains realistic benign and common network attacks captured over 5 days (Monday through Friday).
-
-### Download Source:
-- **Official UNB Portal**: [UNB CIC-IDS2017 Dataset](https://www.unb.ca/cic/datasets/ids-2017.html)
-- **Kaggle Mirror (Pre-extracted CSVs)**: [Kaggle CIC-IDS2017 Collection](https://www.kaggle.com/datasets/cicdataset/cicids2017)
-
-### Key Files in CIC-IDS2017:
-1. `Monday-WorkingHours.pcap_ISCX.csv` (100% Benign baseline)
-2. `Tuesday-WorkingHours.pcap_ISCX.csv` (FTP-Patator, SSH-Patator brute force)
-3. `Wednesday-workingHours.pcap_ISCX.csv` (DoS Hulk, DoS GoldenEye, DoS slowloris, DoS Slowhttptest, Heartbleed)
-4. `Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv` (Brute Force, XSS, SQL Injection)
-5. `Thursday-WorkingHours-Afternoon-Infiltration.pcap_ISCX.csv` (Infiltration, PortScan)
-6. `Friday-WorkingHours-Morning.pcap_ISCX.csv` (Botnet ARES)
-7. `Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv` (PortScan)
-8. `Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv` (DDoS LOIC)
-
----
-
-## 2. Directory Placement
-
-Place downloaded CSV files in the `ml/data/raw/` folder:
-
-```text
-ml/
-└── data/
-    └── raw/
-        ├── Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv
-        ├── Wednesday-workingHours.pcap_ISCX.csv
-        └── ... (or combined CIC-IDS2017.csv)
-```
-
-> **Note**: If `ml/data/raw/` is empty, the pipeline will automatically generate a **strictly labeled synthetic development sample** (`cicids2017_dev_sample.csv`) that matches the exact 78-feature schema so you can develop, test, and run the complete system immediately.
-
----
-
-## 3. Expected Feature Schema
-
-The dataset contains 78+ network flow features calculated with CICFlowMeter:
-
-| Feature Category | Examples | Description |
-| :--- | :--- | :--- |
-| **Flow Identifiers** | `Destination Port`, `Flow Duration` | Port and flow lifetime in microseconds |
-| **Packet Counts & Lengths** | `Total Fwd Packets`, `Total Backward Packets`, `Total Length of Fwd Packets`, `Fwd Packet Length Mean`, `Bwd Packet Length Std` | Statistical packet sizes and volumetric properties |
-| **Inter-Arrival Times (IAT)** | `Flow IAT Mean`, `Flow IAT Std`, `Fwd IAT Total`, `Bwd IAT Mean` | Time intervals between consecutive packets in microseconds |
-| **TCP Flag Counts** | `FIN Flag Count`, `SYN Flag Count`, `RST Flag Count`, `PSH Flag Count`, `ACK Flag Count`, `URG Flag Count` | TCP handshake and connection state signaling flags |
-| **Flow Rates** | `Flow Bytes/s`, `Flow Packets/s` | Throughput and traffic density rates |
-| **Window & Segment Sizes** | `Init_Win_bytes_forward`, `Init_Win_bytes_backward`, `min_seg_size_forward` | TCP window sizes and segment metadata |
-| **Active / Idle Times** | `Active Mean`, `Active Max`, `Idle Mean`, `Idle Min` | Flow activity vs idle period statistics |
-| **Ground Truth Label** | `Label` | `BENIGN`, `DoS Hulk`, `PortScan`, `DDoS`, `FTP-Patator`, `SSH-Patator`, `Bot`, etc. |
-
----
-
-## 4. Alternative Datasets Supported
-
-The preprocessing pipeline is also compatible with:
-- **CIC-IDS2018 (CSE-CIC-IDS2018)**: Updated version on AWS with similar 80-feature schema.
-- **UNSW-NB15**: Network flow dataset from the Australian Cyber Security Centre (requires label column standard mapping).
-
----
-
-## 5. Running the Data Pipeline & Training
-
-Once raw CSV files are placed in `ml/data/raw/`:
+## 1. One command
 
 ```bash
-# 1. Run full preprocessing and leakage-free train/val/test splitting:
-python ml/preprocessing/pipeline.py
-
-# 2. Run feature selection and hyperparameter optimization:
-python ml/training/optimize_models.py
-
-# 3. Train all baseline and ensemble models:
-python ml/training/run_all_experiments.py
+python -m ml.data.build_dataset --download --build
 ```
+
+That downloads the 8 official *MachineLearningCSV* files (~885 MB) from a public mirror and builds the training sample. Nothing else is needed.
+
+| Day file | Rows | Traffic |
+|:--|--:|:--|
+| Monday-WorkingHours | 529,918 | 100% benign |
+| Tuesday-WorkingHours | 445,909 | FTP-Patator, SSH-Patator brute force |
+| Wednesday-workingHours | 692,703 | DoS Hulk, GoldenEye, slowloris, Slowhttptest, Heartbleed |
+| Thursday-Morning-WebAttacks | 170,366 | Web brute force, XSS, SQL injection |
+| Thursday-Afternoon-Infilteration | 288,602 | Infiltration |
+| Friday-Morning | 191,033 | Bot (ARES) |
+| Friday-Afternoon-PortScan | 286,467 | PortScan |
+| Friday-Afternoon-DDos | 225,745 | DDoS (LOIC) |
+| **Total** | **2,830,743** | 15 classes, 78 features + label |
+
+Sources: [UNB official page](https://www.unb.ca/cic/datasets/ids-2017.html) (requires a form), [Kaggle mirror](https://www.kaggle.com/datasets/cicdataset/cicids2017) (requires login), [Hugging Face mirror `c01dsnap/CIC-IDS2017`](https://huggingface.co/datasets/c01dsnap/CIC-IDS2017) (direct download — used by the script).
+
+## 2. Why a sample, and how it is drawn
+
+Training 18 models — including an RBF-SVM, KNN and a 5-fold stacking ensemble — on 2.8M rows is not feasible on a laptop (an RBF-SVM alone would take hours per fit). The builder therefore draws a **class-capped stratified sample**:
+
+* `BENIGN` is randomly down-sampled to `--benign-rows` (default 40,000).
+* Every attack class is randomly down-sampled to `--attack-cap` (default 1,500) **or kept in full if smaller** — so Heartbleed (11 rows), SQL Injection (21) and Infiltration (36) are never lost.
+* Seed 42; the manifest `ml/data/raw/cicids2017_sample_manifest.json` records both the full-corpus and the sample class counts.
+
+Result with defaults: 55,720 rows, 28% attack, all 15 classes. The overall imbalance (≈3:1) and the extreme within-attack imbalance (40,000 benign vs 11 Heartbleed) keep the *imbalanced data* question meaningful.
+
+This is a standard practice in CIC-IDS2017 papers, but it does change the class prior relative to the original 80/20 corpus — the docs say so explicitly rather than hiding it.
+
+## 3. Known quirks of the raw files (all handled in code)
+
+* Column names have leading spaces → stripped.
+* `Flow Bytes/s` and `Flow Packets/s` contain `Infinity` and `NaN` (zero-duration flows) → coerced to NaN and median-imputed (train-fitted).
+* The three *Web Attack* labels contain a mis-encoded en-dash (`Web Attack � Brute Force`) → normalised to `Web Attack - Brute Force`.
+* `Fwd Header Length` appears twice (`Fwd Header Length.1`) → kept, the correlation filter removes the duplicate.
+* 8 columns are constant (all zero: bulk-rate features, `Bwd PSH Flags`, `Bwd URG Flags`, …) → dropped.
+* Exact duplicate rows exist → removed **before** splitting so the same flow can't appear in both train and test.
+
+## 4. Files that stay out of git
+
+`ml/data/raw/cicids2017_full/`, `ml/data/raw/cicids2017_sample.csv` and `ml/data/splits/` are git-ignored (hundreds of MB). Re-create them with the one command above.
+
+## 5. Without the real data
+
+If `ml/data/raw/` is empty the loader generates a small **synthetic** fixture so the code can be smoke-tested. Every artifact produced from it is tagged `is_synthetic: true`, and the dashboard shows a warning banner. Synthetic results are not research results.

@@ -65,6 +65,35 @@ def get_optimization_study():
         return json.load(f)
 
 
+ARTIFACT_WHITELIST = {
+    "cv-results": "cv_results.json",
+    "imbalance-study": "imbalance_study.json",
+    "per-class-recall": "per_class_recall.json",
+    "search-comparison": "optimization_study.json",
+    "shap-global": "shap_global.json",
+    "pca-summary": "pca_summary.json",
+}
+
+
+@router.get("/artifact/{name}")
+def get_named_artifact(name: str):
+    """
+    Serve one of the metrics JSON artifacts produced by the experiment runner:
+    cv-results, imbalance-study, per-class-recall, search-comparison, shap-global, pca-summary.
+    """
+    fname = ARTIFACT_WHITELIST.get(name)
+    if fname is None:
+        raise HTTPException(status_code=404, detail=f"Unknown artifact '{name}'. Choose from {sorted(ARTIFACT_WHITELIST)}.")
+    path = ml_service.metrics_dir / fname
+    if not path.exists():
+        raise HTTPException(status_code=404, detail=f"Artifact {fname} not generated yet. Run the experiment runner.")
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    if name == "search-comparison":
+        return {"search_comparison": data.get("search_comparison", []), "protocol": data.get("protocol", "")}
+    return data
+
+
 @router.get("/feature-selection")
 def get_feature_selection_benchmarks():
     """

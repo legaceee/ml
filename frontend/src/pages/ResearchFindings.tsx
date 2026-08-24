@@ -72,9 +72,9 @@ export const ResearchFindings: React.FC = () => {
       question: conclusions.rq2_feature_selection.question,
       answer: conclusions.rq2_feature_selection.finding,
       stats: [
-        { label: "Features Reduced", val: "61 → 27" },
-        { label: "Variance Retained", val: "95% (PCA 18)" },
-        { label: "Speedup", val: "~32%" }
+        { label: "Best Subset", val: `${(conclusions.rq2_feature_selection as any).best_subset_features ?? "-"} feats` },
+        { label: "F1 vs All", val: `${((conclusions.rq2_feature_selection as any).f1_change ?? 0) >= 0 ? "+" : ""}${((conclusions.rq2_feature_selection as any).f1_change ?? 0).toFixed(4)}` },
+        { label: "Train Time", val: `${((conclusions.rq2_feature_selection as any).train_time_change_pct ?? 0) >= 0 ? "+" : ""}${(conclusions.rq2_feature_selection as any).train_time_change_pct ?? 0}%` }
       ]
     },
     {
@@ -119,7 +119,7 @@ export const ResearchFindings: React.FC = () => {
       stats: [
         { label: "Balanced Model", val: conclusions.rq5_optimal_tradeoff.best_tradeoff_model.replace(/_/g, " ").toUpperCase() },
         { label: "Peak Recall", val: `${(conclusions.rq5_optimal_tradeoff.highest_recall_value * 100).toFixed(2)}%` },
-        { label: "Latency", val: "Optimal" }
+        { label: "Latency", val: `${((conclusions.rq5_optimal_tradeoff as any).best_tradeoff_latency_ms_per_1k ?? 0).toFixed(2)} ms/1k` }
       ]
     },
     {
@@ -134,9 +134,39 @@ export const ResearchFindings: React.FC = () => {
       stats: [
         { label: "Key Protocol Vector", val: conclusions.rq6_explainability.top_global_features[0] || "Flow Duration" },
         { label: "XAI Method", val: "Tree SHAP" },
-        { label: "Fidelity", val: "Local & Global" }
+        { label: "Explained", val: ((conclusions.rq6_explainability as any).explained_model || "").replace(/_/g, " ").toUpperCase() }
       ]
-    }
+    },
+    ...((conclusions as any).rq7_imbalance_handling ? [{
+      id: "RQ7",
+      title: "Imbalanced Data Handling",
+      icon: ShieldAlert,
+      color: "text-rose-400",
+      bg: "bg-rose-500/10",
+      border: "border-rose-500/20",
+      question: (conclusions as any).rq7_imbalance_handling.question,
+      answer: (conclusions as any).rq7_imbalance_handling.finding,
+      stats: [
+        { label: "Train Attack %", val: `${(((conclusions as any).rq7_imbalance_handling.train_attack_ratio || 0) * 100).toFixed(1)}%` },
+        { label: "Best for LR", val: (((conclusions as any).rq7_imbalance_handling.best_strategy_by_model || {}).logistic_regression || {}).strategy || "-" },
+        { label: "Best for RF", val: (((conclusions as any).rq7_imbalance_handling.best_strategy_by_model || {}).random_forest || {}).strategy || "-" }
+      ]
+    }] : []),
+    ...((conclusions as any).rq8_per_attack_type ? [{
+      id: "RQ8",
+      title: "Per-Attack-Type Coverage",
+      icon: HelpCircle,
+      color: "text-teal-400",
+      bg: "bg-teal-500/10",
+      border: "border-teal-500/20",
+      question: (conclusions as any).rq8_per_attack_type.question,
+      answer: (conclusions as any).rq8_per_attack_type.finding,
+      stats: [
+        { label: "Model", val: ((conclusions as any).rq8_per_attack_type.model || "").replace(/_/g, " ").toUpperCase() },
+        { label: "Classes < 0.95", val: `${((conclusions as any).rq8_per_attack_type.weak_classes || []).length}` },
+        { label: "Weakest", val: (((conclusions as any).rq8_per_attack_type.weak_classes || [])[0] || {}).class || "none" }
+      ]
+    }] : [])
   ];
 
   return (
@@ -148,7 +178,7 @@ export const ResearchFindings: React.FC = () => {
           <span>Automated Academic Research Conclusion Synthesizer</span>
         </h2>
         <p className="text-xs text-slate-400 mt-1">
-          Empirically derived answers to research questions RQ1–RQ6 populated strictly from actual experimental measurements without fabrication.
+          Empirically derived answers to research questions RQ1–RQ8 populated strictly from actual experimental measurements without fabrication.
         </p>
       </div>
 

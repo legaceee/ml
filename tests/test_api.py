@@ -67,3 +67,15 @@ def test_research_conclusions_endpoint():
     assert "rq1_individual_baselines" in data
     assert "rq4_ensemble_superiority" in data
     assert "executive_summary" in data
+
+
+@pytest.mark.parametrize("name", ["cv-results", "imbalance-study", "per-class-recall", "search-comparison"])
+def test_named_artifact_endpoints(name):
+    response = client.get(f"/api/experiments/artifact/{name}")
+    assert response.status_code in (200, 404)
+    if response.status_code == 200:
+        assert isinstance(response.json(), dict)
+
+
+def test_unknown_artifact_rejected():
+    assert client.get("/api/experiments/artifact/not-a-thing").status_code == 404

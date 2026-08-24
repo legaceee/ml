@@ -1,14 +1,23 @@
 """
 Master Preprocessing Pipeline with Strict Zero-Leakage Splitting.
 
-Splits dataset into Stratified Train (70%), Validation (15%), and Test (15%)
-BEFORE fitting any scalers, imputers, or transformers.
+Order of operations (the order matters for leakage):
+1. Load raw CSV.
+2. Clean: strip headers, coerce Inf/NaN, drop exact duplicate rows, drop
+   constant columns. Duplicates are dropped BEFORE splitting so that the same
+   flow can never sit in both train and test.
+3. Encode the label (binary: BENIGN=0, ATTACK=1). The original attack
+   category is kept alongside for per-attack-type analysis.
+4. Stratified split into Train (70%) / Validation (15%) / Test (15%).
+5. Fit the median imputer + StandardScaler on TRAIN ONLY, then transform all
+   three splits with those frozen parameters.
+6. Persist splits, preprocessor and an audit summary.
 """
 
 import json
-import os
 from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional
+
 import joblib
 import numpy as np
 import pandas as pd
@@ -54,10 +63,13 @@ class PipelineOrchestrator:
         self.encoder = LabelEncoderIDS(mode=mode)
         self.preprocessor = NetworkFlowPreprocessor(scaler_type="standard", strategy="median")
 
+    @staticmethod
+    def _class_counts(labels: np.ndarray) -> Dict[str, int]:
+        vals, counts = np.unique(np.asarray(labels).astype(str), return_counts=True)
+        return {str(k): int(v) for k, v in sorted(zip(vals, counts), key=lambda kv: -kv[1])}
+
     def run(self, filename: Optional[str] = None, sample_size: Optional[int] = None) -> Dict:
-        """
-        Execute full end-to-end preprocessing workflow with leakage-free splitting.
-        """
+        """Execute the full preprocessing workflow with leakage-free splitting."""
         print("=" * 60)
         print(">>> Starting Preprocessing Pipeline (Leakage Prevention Protocol)")
         print("=" * 60)
@@ -65,11 +77,12 @@ class PipelineOrchestrator:
         # 1. Load Raw Dataset
         loader = DatasetLoader(raw_data_dir=str(self.base_dir / "data" / "raw"))
         raw_df, audit_meta = loader.load_dataset(filename=filename, sample_size=sample_size, random_state=self.random_seed)
-        print(f"[1/6] Raw dataset loaded: {raw_df.shape[0]} rows, {raw_df.shape[1]} columns. Synthetic: {audit_meta['is_synthetic']}")
+        print(f"[1/6] Raw dataset loaded: {raw_df.shape[0]:,} rows, {raw_df.shape[1]} columns. Synthetic: {audit_meta['is_synthetic']}")
 
-        # 2. Data Cleaning
+        # 2. Data Cleaning (before the split so duplicates cannot straddle splits)
         cleaned_df, clean_audit = self.cleaner.clean_dataframe(raw_df, is_train=True)
-        print(f"[2/6] Data cleaned. Deduplicated rows: {clean_audit['duplicates_removed']}, Constant columns dropped: {len(clean_audit['constant_columns_dropped'])}")
+        print(f"[2/6] Data cleaned. Duplicates removed: {clean_audit['duplicates_removed']:,}, "
+              f"Inf/NaN cells: {clean_audit['nan_inf_cells_found']:,}, Constant columns dropped: {len(clean_audit['constant_columns_dropped'])}")
 
         # 3. Label Extraction & Target Encoding
         label_col = None
@@ -80,43 +93,40 @@ class PipelineOrchestrator:
         if label_col is None:
             raise ValueError("No label column found in cleaned dataset.")
 
-        y_raw = cleaned_df[label_col].values
+        y_raw = cleaned_df[label_col].astype(str).str.strip().values
         X_df = cleaned_df.drop(columns=[label_col])
         y = self.encoder.transform(y_raw)
-        
         feature_names = list(X_df.columns)
-        print(f"[3/6] Target encoded. Total Features: {len(feature_names)}. Class counts: {dict(pd.Series(y).value_counts())}")
+        print(f"[3/6] Target encoded ({self.mode}). Features: {len(feature_names)}. "
+              f"Class counts: {dict(zip(*np.unique(y, return_counts=True)))}")
 
-        # 4. Stratified Train / Validation / Test Splitting
-        # First split: Train vs Temp (Val + Test)
+        # 4. Stratified Train / Validation / Test Splitting.
+        #    Stratify on the ORIGINAL category so rare attacks are spread across splits.
+        strat_key = y_raw if np.min(np.unique(y_raw, return_counts=True)[1]) >= 3 else y
         test_val_ratio = self.val_ratio + self.test_ratio
-        X_train_df, X_temp_df, y_train, y_temp = train_test_split(
-            X_df, y,
-            test_size=test_val_ratio,
-            stratify=y,
-            random_state=self.random_seed
-        )
-
-        # Second split: Validation vs Test
+        idx_all = np.arange(len(X_df))
+        idx_train, idx_temp = train_test_split(idx_all, test_size=test_val_ratio, stratify=strat_key, random_state=self.random_seed)
+        strat_temp = strat_key[idx_temp]
+        if np.min(np.unique(strat_temp, return_counts=True)[1]) < 2:
+            strat_temp = y[idx_temp]
         val_relative_ratio = self.val_ratio / test_val_ratio
-        X_val_df, X_test_df, y_val, y_test = train_test_split(
-            X_temp_df, y_temp,
-            test_size=(1.0 - val_relative_ratio),
-            stratify=y_temp,
-            random_state=self.random_seed
-        )
+        idx_val, idx_test = train_test_split(idx_temp, test_size=(1.0 - val_relative_ratio), stratify=strat_temp, random_state=self.random_seed)
 
-        print(f"[4/6] Stratified Splits created:")
-        print(f"      Train: {len(X_train_df)} rows ({len(X_train_df)/len(X_df)*100:.1f}%)")
-        print(f"      Val:   {len(X_val_df)} rows ({len(X_val_df)/len(X_df)*100:.1f}%)")
-        print(f"      Test:  {len(X_test_df)} rows ({len(X_test_df)/len(X_df)*100:.1f}%)")
+        X_train_df, X_val_df, X_test_df = X_df.iloc[idx_train], X_df.iloc[idx_val], X_df.iloc[idx_test]
+        y_train, y_val, y_test = y[idx_train], y[idx_val], y[idx_test]
+        y_train_raw, y_val_raw, y_test_raw = y_raw[idx_train], y_raw[idx_val], y_raw[idx_test]
+
+        print("[4/6] Stratified splits created:")
+        print(f"      Train: {len(X_train_df):,} rows ({len(X_train_df)/len(X_df)*100:.1f}%)")
+        print(f"      Val:   {len(X_val_df):,} rows ({len(X_val_df)/len(X_df)*100:.1f}%)")
+        print(f"      Test:  {len(X_test_df):,} rows ({len(X_test_df)/len(X_df)*100:.1f}%)")
 
         # 5. Fit Preprocessor strictly on Train ONLY
         self.preprocessor.fit(X_train_df)
         X_train_scaled = self.preprocessor.transform(X_train_df)
         X_val_scaled = self.preprocessor.transform(X_val_df)
         X_test_scaled = self.preprocessor.transform(X_test_df)
-        print(f"[5/6] Preprocessor fitted exclusively on Train split; Val and Test transformed.")
+        print("[5/6] Imputer + scaler fitted on Train only; Val and Test transformed with frozen parameters.")
 
         # 6. Save Splits and Preprocessing Artifacts
         split_data = {
@@ -126,11 +136,15 @@ class PipelineOrchestrator:
             "y_val": y_val,
             "X_test": X_test_scaled,
             "y_test": y_test,
+            "y_train_labels": y_train_raw,
+            "y_val_labels": y_val_raw,
+            "y_test_labels": y_test_raw,
             "feature_names": feature_names,
             "class_names": self.encoder.get_class_names(),
-            "X_train_df_raw": X_train_df,  # unscaled for tree models if needed
-            "X_val_df_raw": X_val_df,
-            "X_test_df_raw": X_test_df
+            "X_train_df_raw": X_train_df.reset_index(drop=True),
+            "X_val_df_raw": X_val_df.reset_index(drop=True),
+            "X_test_df_raw": X_test_df.reset_index(drop=True),
+            "is_synthetic": bool(audit_meta["is_synthetic"]),
         }
 
         splits_file = self.splits_dir / "dataset_splits.joblib"
@@ -147,7 +161,6 @@ class PipelineOrchestrator:
         }, preprocessor_file)
         print(f"      Saved preprocessor pipeline to: {preprocessor_file}")
 
-        # Save summary metadata JSON for API & UI
         summary = {
             "dataset_info": audit_meta,
             "cleaning_audit": {
@@ -158,12 +171,21 @@ class PipelineOrchestrator:
                 "constant_columns_dropped": clean_audit["constant_columns_dropped"]
             },
             "split_info": {
-                "train_count": len(X_train_df),
-                "val_count": len(X_val_df),
-                "test_count": len(X_test_df),
+                "train_count": int(len(X_train_df)),
+                "val_count": int(len(X_val_df)),
+                "test_count": int(len(X_test_df)),
                 "train_attack_ratio": float(np.mean(y_train == 1)),
                 "val_attack_ratio": float(np.mean(y_val == 1)),
-                "test_attack_ratio": float(np.mean(y_test == 1))
+                "test_attack_ratio": float(np.mean(y_test == 1)),
+                "train_class_counts": self._class_counts(y_train_raw),
+                "val_class_counts": self._class_counts(y_val_raw),
+                "test_class_counts": self._class_counts(y_test_raw),
+            },
+            "preprocessing": {
+                "imputation": "median (fitted on train split only)",
+                "scaling": "StandardScaler z-score (fitted on train split only)",
+                "duplicate_policy": "exact duplicate rows removed before splitting",
+                "random_seed": self.random_seed,
             },
             "features": feature_names,
             "num_features": len(feature_names),

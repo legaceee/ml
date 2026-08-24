@@ -9,6 +9,7 @@ import { EnsembleAnalysis } from "./pages/EnsembleAnalysis";
 import { Explainability } from "./pages/Explainability";
 import { ResearchFindings } from "./pages/ResearchFindings";
 import { DatasetExplorer } from "./pages/DatasetExplorer";
+import { CourseLab } from "./pages/CourseLab";
 import { fetchHealth } from "./services/api";
 
 export const App: React.FC = () => {
@@ -43,6 +44,7 @@ export const App: React.FC = () => {
         {activeTab === "explainability" && <Explainability />}
         {activeTab === "research" && <ResearchFindings />}
         {activeTab === "dataset" && <DatasetExplorer />}
+        {activeTab === "courselab" && <CourseLab />}
       </main>
 
       {/* Footer */}
